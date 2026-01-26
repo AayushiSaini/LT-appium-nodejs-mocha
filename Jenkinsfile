@@ -8,15 +8,30 @@ pipeline {
     stages {
         stage('Cleanup & Setup') {
             steps {
-                // Purana kachra saaf karke fresh install
                 sh 'rm -rf node_modules package-lock.json'
                 sh 'npm install'
             }
         }
-        stage('Execution') {
-            steps {
-                sh 'npm run parallel_ios'
+        stage('Test Execution') {
+            parallel {
+                stage('iOS Tests') {
+                    steps {
+                        echo "Starting iOS Parallel Tests..."
+                        sh 'npm run parallel_ios'
+                    }
+                }
+                stage('Android Tests') {
+                    steps {
+                        echo "Starting Android Parallel Tests..."
+                        sh 'npm run parallel_android'
+                    }
+                }
             }
+        }
+    }
+    post {
+        always {
+            echo "Build Process Completed."
         }
     }
 }
