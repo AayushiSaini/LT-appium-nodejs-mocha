@@ -1,11 +1,10 @@
 pipeline {
     agent any
-    parameters {
-        choice(name: 'TEST_TYPE', choices: ['parallel_ios', 'parallel_android', 'ios', 'android'], description: 'Kaunsa test run karna hai?')
-    }
     environment {
         LT_USERNAME = credentials('LT_USER')
         LT_ACCESS_KEY = credentials('LT_KEY')
+        // Is line se Jenkins ko npm mil jayega
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
     }
     stages {
         stage('Setup') {
@@ -15,8 +14,8 @@ pipeline {
         }
         stage('Execution') {
             steps {
-                // Ye command dynamic ho jayegi parameters ke hisaab se
-                sh "CONFIG_FILE=${params.TEST_TYPE} ./node_modules/.bin/mocha specs/${params.TEST_TYPE}_test.js conf/${params.TEST_TYPE}.conf.js --timeout=300000"
+                // Aapka purana mocha command
+                sh './node_modules/.bin/mocha specs/parallel_ios_test.js conf/parallel_ios.conf.js --timeout=300000'
             }
         }
     }
