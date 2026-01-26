@@ -1,8 +1,6 @@
 {
   "name": "mocha-selenium-sample",
   "version": "1.0.0",
-  "description": "LambdaTest Appium Node.js Mocha Sample",
-  "main": "index.js",
   "scripts": {
     "parallel_ios": "mocha specs/parallel_ios_test.js --timeout=300000"
   },

@@ -1,24 +1,21 @@
 const { Builder } = require("selenium-webdriver");
 const conf = require("../conf/parallel_ios.conf.js");
 
-const LT_USERNAME = process.env.LT_USERNAME || conf.LT_USERNAME;
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || conf.LT_ACCESS_KEY;
+const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
 
 describe("LambdaTest iOS Parallel Test", function () {
   this.timeout(300000);
 
   conf.capabilities.forEach(function (caps) {
-    it("should run test on " + caps["appium:deviceName"], async function () {
-      
-      // FIX: Explicitly browser define karo Builder ke andar
+    it("Running test on " + caps['appium:deviceName'], async function () {
       let driver = await new Builder()
         .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@hub.lambdatest.com/wd/hub")
-        .forBrowser('safari') // Browser string yahan hardcoded honi chahiye
+        .forBrowser('safari')
         .withCapabilities({
           ...caps,
-          "lt:options": {
-            ...caps["lt:options"],
-            project: "Final_Fix_Project",
+          'lt:options': {
+            ...caps['lt:options'],
             user: LT_USERNAME,
             accessKey: LT_ACCESS_KEY
           }
@@ -27,7 +24,7 @@ describe("LambdaTest iOS Parallel Test", function () {
 
       try {
         await driver.get("https://google.com");
-        console.log("Success on " + caps["appium:deviceName"]);
+        console.log("Success: " + caps['appium:deviceName']);
       } finally {
         if (driver) await driver.quit();
       }
