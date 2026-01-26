@@ -1,98 +1,39 @@
-<<<<<<< HEAD
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const { Builder, By, Key, until } = require("selenium-webdriver");
+const assert = require("assert");
+const conf = require("../conf/parallel_ios.conf.js");
 
-var config = {
-  commonCapabilities: {
-    'lt:options': {
-      'build': 'Mocha-iOS-Parallel-Sample',
-      'name': 'Mocha-iOS-Parallel',
-      'isRealMobile': true,
-      'visual': false,
-      'network': false,
-      'console': false,
-      'tunnel': false
-    },
-    'appium:app': 'lt://proverbial-ios' // Ensure this matches your LT app upload
-  },
-  multiCapabilities: [
-    {
-      'platformName': 'ios',
-      'appium:deviceName': 'iPhone .*', // Regex for any iPhone 15
-      'appium:platformVersion': '17',    // iOS 18 latest hai but 17 is more stable on cloud
-    },
-    {
-      'platformName': 'ios',
-      'appium:deviceName': 'iPhone .*', // Regex for any iPhone 14
-      'appium:platformVersion': '18',
-    }
-  ]
-};
+const LT_USERNAME = process.env.LT_USERNAME || conf.LT_USERNAME;
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || conf.LT_ACCESS_KEY;
 
-exports.capabilities = [];
+const gridUrl = "hub.lambdatest.com/wd/hub";
 
-// Merging logic for Selenium 4 W3C format
-config.multiCapabilities.forEach(function(caps) {
-  // Deep copy common capabilities
-  let temp_caps = JSON.parse(JSON.stringify(config.commonCapabilities));
-  
-  // Root level capabilities
-  temp_caps['platformName'] = caps['platformName'];
-  temp_caps['browserName'] = 'Safari'; // Safari is needed for iOS internal routing
-  
-  // Appium specific capabilities
-  temp_caps['appium:deviceName'] = caps['appium:deviceName'];
-  temp_caps['appium:platformVersion'] = caps['appium:platformVersion'];
+describe("LambdaTest iOS Parallel Test", function () {
+  this.timeout(300000);
+  let driver;
 
-  exports.capabilities.push(temp_caps);
-});
+  conf.capabilities.forEach(function (caps) {
+    it("should run test on " + caps["appium:deviceName"], async function () {
+      const capabilities = {
+        ...caps,
+        "lt:options": {
+          ...caps["lt:options"],
+          user: LT_USERNAME,
+          accessKey: LT_ACCESS_KEY,
+        },
+      };
 
-exports.LT_USERNAME = LT_USERNAME;
-exports.LT_ACCESS_KEY = LT_ACCESS_KEY;
-=======
-const { Builder, By } = require("selenium-webdriver");
-
-// Credentials fallback
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
-
-// Config file path logic
-const conf_file = process.argv[3] || "conf/parallel_ios.conf.js";
-const capabilities = require("../" + conf_file).capabilities;
-
-var buildDriver = function(caps) {
-  return new Builder()
-    .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`)
-    .withCapabilities(caps)
-    .forBrowser('safari') // <--- Yeh line error fix karegi
-    .build();
-};
-
-capabilities.forEach(function(caps) {
-  // Device name extract karne ke liye (Safe check)
-  const deviceName = caps['appium:deviceName'] || "iOS Device";
-
-  describe("Mocha Parallel iOS: " + deviceName, function() {
-    let driver;
-    this.timeout(180000);
-
-    it("Application is launched on " + deviceName, async function() {
-      driver = await buildDriver(caps);
+      driver = await new Builder()
+        .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@" + gridUrl)
+        .withCapabilities(capabilities)
+        .build();
 
       try {
-        // iOS element interaction (Sample: clicking by ID or accessibility id)
-        // Note: iOS mein IDs thode alag ho sakte hain, test ke hisaab se check karein
-        await driver.findElement(By.id('Text')).click();
-        console.log("Successfully clicked Text on " + deviceName);
-      } catch (err) {
-        console.log("Error on " + deviceName + ": " + err.message);
-        throw err;
+        // Aapka Test Logic yahan aayega
+        await driver.get("https://google.com");
+        console.log("Test Passed for " + caps["appium:deviceName"]);
       } finally {
-        if (driver) {
-          await driver.quit();
-        }
+        await driver.quit();
       }
     });
   });
 });
->>>>>>> bd549dd (Saving all changes before pull)

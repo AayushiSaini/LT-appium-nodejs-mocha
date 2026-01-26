@@ -9,10 +9,10 @@
     "parallel_ios": "mocha specs/parallel_ios_test.js conf/parallel_ios.conf.js --timeout=300000"
   },
   "dependencies": {
-    "mocha": "^11.0.1",
-    "selenium-webdriver": "^4.27.0"
+    "mocha": "11.0.1",
+    "selenium-webdriver": "4.27.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "7.0.3"
   }
 }

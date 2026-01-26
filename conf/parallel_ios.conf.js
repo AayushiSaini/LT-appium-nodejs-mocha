@@ -12,18 +12,18 @@ var config = {
       'console': false,
       'tunnel': false
     },
-    'appium:app': 'lt://proverbial-ios' 
+    'appium:app': 'lt://proverbial-ios'
   },
   multiCapabilities: [
     {
       'platformName': 'ios',
-      'appium:deviceName': 'iPhone 15.*', 
-      'appium:platformVersion': '17',    
+      'appium:deviceName': 'iPhone 15',
+      'appium:platformVersion': '17',
     },
     {
       'platformName': 'ios',
-      'appium:deviceName': 'iPhone 14.*', 
-      'appium:platformVersion': '16',
+      'appium:deviceName': 'iPhone 14',
+      'appium:platformVersion': '18',
     }
   ]
 };
@@ -33,7 +33,6 @@ exports.capabilities = [];
 config.multiCapabilities.forEach(function(caps) {
   let temp_caps = JSON.parse(JSON.stringify(config.commonCapabilities));
   temp_caps['platformName'] = caps['platformName'];
-  temp_caps['browserName'] = 'Safari'; 
   temp_caps['appium:deviceName'] = caps['appium:deviceName'];
   temp_caps['appium:platformVersion'] = caps['appium:platformVersion'];
   exports.capabilities.push(temp_caps);
