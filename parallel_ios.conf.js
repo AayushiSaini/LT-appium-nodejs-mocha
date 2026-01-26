@@ -7,7 +7,9 @@ exports.capabilities = [
     'lt:options': {
       'isRealMobile': true,
       'build': 'Mocha-iOS-Parallel-Final',
-      'name': 'Test-iPhone-15'
+      'name': 'Test-iPhone-15',
+      'visual': true,
+      'network': true
     }
   },
   {
@@ -18,7 +20,9 @@ exports.capabilities = [
     'lt:options': {
       'isRealMobile': true,
       'build': 'Mocha-iOS-Parallel-Final',
-      'name': 'Test-iPhone-14'
+      'name': 'Test-iPhone-14',
+      'visual': true,
+      'network': true
     }
   }
 ];

@@ -1,8 +1,9 @@
 const { Builder } = require("selenium-webdriver");
 const conf = require("../conf/parallel_ios.conf.js");
 
-const LT_USERNAME = process.env.LT_USERNAME;
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY;
+// Credentials from Environment Variables
+const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
 
 describe("LambdaTest iOS Parallel Test", function () {
   this.timeout(300000);
@@ -10,10 +11,9 @@ describe("LambdaTest iOS Parallel Test", function () {
   conf.capabilities.forEach(function (caps) {
     it("Running test on " + caps['appium:deviceName'], async function () {
       
-      // Seedha configuration yahan define kar di
       let driver = await new Builder()
         .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@hub.lambdatest.com/wd/hub`)
-        .forBrowser('safari') // String format mein browser name
+        .forBrowser('safari') 
         .withCapabilities({
           ...caps,
           'lt:options': {
@@ -27,7 +27,10 @@ describe("LambdaTest iOS Parallel Test", function () {
       try {
         await driver.get("https://google.com");
         let title = await driver.getTitle();
-        console.log(`Title for ${caps['appium:deviceName']}: ${title}`);
+        console.log("Title for " + caps['appium:deviceName'] + ": " + title);
+      } catch (err) {
+        console.error("Test failed for " + caps['appium:deviceName'] + ": " + err.message);
+        throw err;
       } finally {
         if (driver) await driver.quit();
       }

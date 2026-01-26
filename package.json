@@ -1,18 +1,13 @@
 {
   "name": "mocha-selenium-sample",
   "version": "1.0.0",
-  "description": "Appium automation for LambdaTest",
+  "description": "LambdaTest Appium Node.js Mocha Sample",
   "main": "index.js",
   "scripts": {
-    "test": "npm run parallel_ios",
-    "parallel_android": "mocha specs/parallel_android_test.js conf/parallel_android.conf.js --timeout=300000",
-    "parallel_ios": "mocha specs/parallel_ios_test.js conf/parallel_ios.conf.js --timeout=300000"
+    "parallel_ios": "mocha specs/parallel_ios_test.js --timeout=300000"
   },
   "dependencies": {
-    "mocha": "11.0.1",
-    "selenium-webdriver": "4.27.0"
-  },
-  "devDependencies": {
-    "cross-env": "7.0.3"
+    "mocha": "^10.2.0",
+    "selenium-webdriver": "^4.10.0"
   }
 }
