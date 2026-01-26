@@ -10,8 +10,6 @@ describe("LambdaTest iOS Parallel Test", function () {
 
   conf.capabilities.forEach(function (caps) {
     it("should run test on " + caps["appium:deviceName"], async function () {
-      
-      // Capabilities merge kar rahe hain LambdaTest credentials ke sath
       const capabilities = {
         ...caps,
         "lt:options": {
@@ -21,23 +19,18 @@ describe("LambdaTest iOS Parallel Test", function () {
         },
       };
 
-      // YAHAN HAI FIX: .forBrowser('safari') add kiya hai
       let driver = await new Builder()
         .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@" + gridUrl)
-        .forBrowser('safari') 
+        .forBrowser('safari')
         .withCapabilities(capabilities)
         .build();
 
       try {
-        // Simple test: Google open karke title check karna
         await driver.get("https://google.com");
         let title = await driver.getTitle();
-        console.log("Browser title for " + caps["appium:deviceName"] + " is: " + title);
-      } catch (err) {
-        console.log("Error on " + caps["appium:deviceName"] + ": " + err.message);
-        throw err;
+        console.log("Title is: " + title);
       } finally {
-        await driver.quit();
+        if (driver) { await driver.quit(); }
       }
     });
   });
