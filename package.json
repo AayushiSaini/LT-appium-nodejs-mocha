@@ -2,7 +2,8 @@
   "name": "mocha-selenium-sample",
   "version": "1.0.0",
   "scripts": {
-    "parallel_ios": "mocha specs/parallel_ios_test.js --timeout=300000"
+    "parallel_ios": "mocha specs/parallel_ios_test.js --timeout=300000",
+    "parallel_android": "mocha specs/parallel_android_test.js --timeout=300000"
   },
   "dependencies": {
     "mocha": "^10.2.0",
