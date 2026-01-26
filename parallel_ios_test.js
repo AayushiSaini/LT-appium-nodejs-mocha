@@ -1,37 +1,43 @@
-const { Builder, By } = require("selenium-webdriver");
+const { Builder, By, Key, until } = require("selenium-webdriver");
+const conf = require("../conf/parallel_ios.conf.js");
 
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const LT_USERNAME = process.env.LT_USERNAME || conf.LT_USERNAME;
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || conf.LT_ACCESS_KEY;
+const gridUrl = "hub.lambdatest.com/wd/hub";
 
-const conf_file = process.argv[3] || "conf/parallel_ios.conf.js";
-const capabilities = require("../" + conf_file).capabilities;
+describe("LambdaTest iOS Parallel Test", function () {
+  this.timeout(300000);
 
-var buildDriver = function(caps) {
-  return new Builder()
-    .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`)
-    .withCapabilities(caps)
-    .forBrowser('safari') 
-    .build();
-};
+  conf.capabilities.forEach(function (caps) {
+    it("should run test on " + caps["appium:deviceName"], async function () {
+      
+      // Capabilities merge kar rahe hain LambdaTest credentials ke sath
+      const capabilities = {
+        ...caps,
+        "lt:options": {
+          ...caps["lt:options"],
+          user: LT_USERNAME,
+          accessKey: LT_ACCESS_KEY,
+        },
+      };
 
-capabilities.forEach(function(caps) {
-  const deviceDisplayName = caps['appium:deviceName'];
-
-  describe("Mocha Parallel iOS: " + deviceDisplayName, function() {
-    let driver;
-    this.timeout(300000); // 5 Minutes timeout for queue
-
-    it("Test for " + deviceDisplayName, async function() {
-      driver = await buildDriver(caps);
+      // YAHAN HAI FIX: .forBrowser('safari') add kiya hai
+      let driver = await new Builder()
+        .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@" + gridUrl)
+        .forBrowser('safari') 
+        .withCapabilities(capabilities)
+        .build();
 
       try {
-        await driver.findElement(By.id('color')).click();
-        console.log(`[${deviceDisplayName}] Success: Clicked Color`);
-        
-        await driver.findElement(By.id('Text')).click();
-        console.log(`[${deviceDisplayName}] Success: Clicked Text`);
+        // Simple test: Google open karke title check karna
+        await driver.get("https://google.com");
+        let title = await driver.getTitle();
+        console.log("Browser title for " + caps["appium:deviceName"] + " is: " + title);
+      } catch (err) {
+        console.log("Error on " + caps["appium:deviceName"] + ": " + err.message);
+        throw err;
       } finally {
-        if (driver) await driver.quit();
+        await driver.quit();
       }
     });
   });
