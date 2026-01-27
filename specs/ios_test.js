@@ -1,51 +1,44 @@
-const driver= require("appium-base-driver")
+const { Builder, By } = require("selenium-webdriver");
 
-//const { default: driver } = require("appium-android-driver/build/lib/driver");
-const { By } = require("selenium-webdriver");
-const { element } = require("wd/lib/element-commands");
+const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
 
-require("appium-base-driver")
-var assert= require("assert"),
-  webdriver = require("selenium-webdriver"),
-   conf_file= process.argv[3] || "conf/ios.conf.js";
- 
-
-var caps = require("../" + conf_file).capabilities;
-
-var buildDriver = function(caps) {
-  return new webdriver.Builder()
-    .usingServer(
-      "http://" +
-      LT_USERNAME +
-      ":" +
-      LT_ACCESS_KEY +
-      "@mobile-hub.lambdatest.com/wd/hub"
-    )
-    .withCapabilities(caps)
-    .build();
+const capabilities = {
+    'browserName': 'Safari', // iOS ke liye Safari ya empty string
+    'platformName': 'ios',
+    'appium:deviceName': 'iPhone 13',
+    'appium:platformVersion': '15',
+    'appium:app': 'lt://proverbial-ios', // Ensure aapne iOS app upload kiya ho
+    'appium:isRealMobile': true,
+    'lt:options': {
+        'build': 'Mocha-Appium-iOS-Final',
+        'name': 'iOS-Test',
+        'visual': false,
+        'network': false,
+        'console': false
+    }
 };
 
-describe("Mocha Appium iOS Test " + caps.browserName, function() {
-  var driver;
-  this.timeout(0);
-    it ('Application is launched', function name(done) { 
-        driver=buildDriver(caps);
-        driver.findElement(By.xpath('//XCUIElementTypeButton[@name="color"]')).click().then(function(){
-          console.log("Successfully clicked Color");
-        
-        });
-        driver.findElement(By.xpath('//XCUIElementTypeStaticText[@name="Notification"]')).click().then(function(){
-          console.log("Successfully clicked Notification");
-        });
-        driver.findElement(By.xpath('//XCUIElementTypeStaticText[@name="Toast"]')).click().then(function(){
-            console.log("Successfully clicked Toast");
+describe("LambdaTest iOS Test", function () {
+    let driver;
+    this.timeout(120000);
+
+    before(async function () {
+        driver = await new Builder()
+            .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`)
+            .withCapabilities(capabilities)
+            .forBrowser('safari') 
+            .build();
     });
-         driver.findElement(By.xpath('//XCUIElementTypeButton[@name="Text"]')).click().then(function(){
-             console.log("Successfully clicked Text");
-             driver.quit()
-    });  
-});
+
+    it('Launch iOS App and Click Text', async function () {
+        // iOS element locators thode alag ho sakte hain, ye sample hai
+        await driver.findElement(By.id('Text')).click();
+        console.log("Success: Clicked Text on iOS");
+    });
+
+    after(async function () {
+        if (driver) await driver.quit();
+    });
 });
 
-
-    

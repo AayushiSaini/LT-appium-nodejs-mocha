@@ -1,62 +1,35 @@
-const { default: driver } = require("appium-android-driver");
-const { By } = require("selenium-webdriver");
+const { Builder, By, until } = require("selenium-webdriver");
+const conf = require("../conf/parallel_android.conf.js");
 
+const LT_USERNAME = process.env.LT_USERNAME || conf.LT_USERNAME;
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || conf.LT_ACCESS_KEY;
 
+describe("Android Real Device Test", function () {
+    this.timeout(300000);
+    let driver;
 
-require("appium-android-driver")
-var assert= require("assert"),
-  webdriver = require("selenium-webdriver"),
-   conf_file= process.argv[3] || "conf/parallel_android.conf.js";
- 
-
-var capabilities = require("../" + conf_file).capabilities;
-
-var buildDriver = function(caps) {
-  return new webdriver.Builder()
-    .usingServer(
-      "http://" +
-        LT_USERNAME +
-        ":" +
-        LT_ACCESS_KEY +
-        "@mobile-hub.lambdatest.com/wd/hub"
-    )
-    .withCapabilities(caps)
-    .build();
-};
-
-capabilities.forEach(function(caps) {
-
-  
-
- 
-  describe( "Mocha Parallel Test "+caps.browserName, function() {
-    var driver;
-    this.timeout(0);
-
-    it("Application is launched" + caps.browserName, function(done) {
-      driver = buildDriver(caps);
-      driver.findElement(By.id('com.lambdatest.proverbial:id/color')).click().then(function(){
-        console.log("Successfully clicked Color");
-      });
-     
-
-      driver.findElement(By.id('com.lambdatest.proverbial:id/Text')).click().then(function(){
-        console.log("Successfully clicked Text");
+    before(async function () {
+        const caps = conf.capabilities[0];
+        driver = await new Builder()
+            .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`)
+            .withCapabilities(caps)
+            .forBrowser('')
+            .build();
     });
-    driver.findElement(By.id('com.lambdatest.proverbial:id/notification')).click().then(function(){
-        console.log("Successfully clicked Notification");
-    })
-    driver.findElement(By.id('com.lambdatest.proverbial:id/toast')).click().then(function(){
-        console.log("Successfully clicked Toast");
-    })
 
-    driver.quit().then(function(){
-       done();
+    it('Should interact with Proverbial App', async function () {
+        try {
+            console.log("App Launched!");
+            let colorBtn = await driver.wait(until.elementLocated(By.id('com.lambdatest.proverbial:id/color')), 30000);
+            await colorBtn.click();
+            console.log("Success: Clicked Color");
+        } catch (e) {
+            console.error("Interaction error: ", e.message);
+            throw e;
+        }
     });
-    
-        });
-    
-     });
 
-  });
-      
+    after(async function () {
+        if (driver) await driver.quit();
+    });
+});

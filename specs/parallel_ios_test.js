@@ -1,60 +1,33 @@
-const { default: driver } = require("appium-android-driver");
-const { until } = require("selenium-webdriver");
-const { By } = require("selenium-webdriver");
-const by = require("selenium-webdriver/lib/by");
+const { Builder } = require("selenium-webdriver");
+const conf = require("../conf/parallel_ios.conf.js");
 
+const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
 
+describe("LambdaTest iOS Parallel Test", function () {
+  this.timeout(300000);
 
-require('appium-base-driver')
-var assert= require("assert"),
-  webdriver = require("selenium-webdriver"),
-   conf_file= process.argv[3] || "conf/parallel_ios.conf.js";
- 
+  conf.capabilities.forEach(function (caps) {
+    it("Running test on " + caps['appium:deviceName'], async function () {
+      let driver = await new Builder()
+        .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@hub.lambdatest.com/wd/hub")
+        .forBrowser('safari')
+        .withCapabilities({
+          ...caps,
+          'lt:options': {
+            ...caps['lt:options'],
+            user: LT_USERNAME,
+            accessKey: LT_ACCESS_KEY
+          }
+        })
+        .build();
 
-var capabilities = require("../" + conf_file).capabilities;
-
-var buildDriver = function(caps) {
-  return new webdriver.Builder()
-    .usingServer(
-      "http://" +
-        LT_USERNAME +
-        ":" +
-        LT_ACCESS_KEY +
-        "@mobile-hub.lambdatest.com/wd/hub"
-    )
-    .withCapabilities(caps)
-    .build();
-};
-
-capabilities.forEach(function(caps) {
-
-  describe( "Mocha iOS Parallel Test "+caps.browserName, function() {
-    var driver;
-    this.timeout(0);
-
-    it ('Application is launched', function name(done) { 
-        driver=buildDriver(caps);
-        driver.findElement(By.xpath('//XCUIElementTypeButton[@name="color"]')).click().then(function(){
-          console.log("Successfully clicked Color");
-        
-        });
-        driver.findElement(By.xpath('//XCUIElementTypeStaticText[@name="Notification"]')).click().then(function(){
-          console.log("Successfully clicked Notification");
-        });
-        driver.findElement(By.xpath('//XCUIElementTypeStaticText[@name="Toast"]')).click().then(function(){
-            console.log("Successfully clicked Toast");
+      try {
+        await driver.get("https://google.com");
+        console.log("Success: " + caps['appium:deviceName']);
+      } finally {
+        if (driver) await driver.quit();
+      }
     });
-
-          var button = driver.wait(until.elementLocated(By.xpath('//XCUIElementTypeStaticText[@name="GeoLocation"]')), 10000);
-           button.click();
-             console.log("Successfully clicked GeoLocation")
-             driver.quit().then(function(){
-            done();
-        
-        });
-    
-     });
-
-    });
-
   });
+});
