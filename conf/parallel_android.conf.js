@@ -10,28 +10,11 @@ exports.capabilities = [
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Android-Stable-Build',
-            'name': 'Real-S21-Test',
+            'build': 'Android-Real-Device-Stable',
+            'name': 'Stable-Test-S21',
             'visual': true,
             'network': false,
-            'console': true,
-            'isRealMobile': true
-        }
-    },
-    {
-        'browserName': '',
-        'platformName': 'Android',
-        'appium:deviceName': 'Pixel 6',
-        'appium:platformVersion': '12',
-        'appium:app': 'lt://proverbial-android', 
-        'appium:isRealMobile': true,
-        'lt:options': {
-            'build': 'Mocha-Android-Stable-Build',
-            'name': 'Real-Pixel6-Test',
-            'visual': true,
-            'network': false,
-            'console': true,
-            'isRealMobile': true
+            'console': true
         }
     }
 ];
