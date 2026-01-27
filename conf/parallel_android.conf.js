@@ -12,7 +12,7 @@ exports.capabilities = [{
         'build': 'Mocha-Android-Automation-Final',
         'name': 'Android-Test',
         'visual': true,
-        'network': true,
+        'network': false,
         'console': true
     }
 }];
