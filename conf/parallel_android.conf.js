@@ -10,12 +10,11 @@ exports.capabilities = [
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Real-Device-Final-Try',
-            'name': 'Real-S21-Network',
+            'build': 'Mocha-Android-Stable-Build',
+            'name': 'Real-S21-Test',
             'visual': true,
-            'network': true, 
+            'network': false,
             'console': true,
-            'devicelog': true,
             'isRealMobile': true
         }
     },
@@ -27,12 +26,11 @@ exports.capabilities = [
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Real-Device-Final-Try',
-            'name': 'Real-Pixel6-Network',
+            'build': 'Mocha-Android-Stable-Build',
+            'name': 'Real-Pixel6-Test',
             'visual': true,
-            'network': true,
+            'network': false,
             'console': true,
-            'devicelog': true,
             'isRealMobile': true
         }
     }
