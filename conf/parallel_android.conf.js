@@ -5,31 +5,31 @@ exports.capabilities = [
     {
         'browserName': '',
         'platformName': 'Android',
-        'appium:deviceName': 'Galaxy S21 5G', // Real Device Name
+        'appium:deviceName': 'Galaxy S21 5G',
         'appium:platformVersion': '12',
         'appium:app': 'lt://proverbial-android', 
-        'appium:isRealMobile': true, // Yeh sabse important hai
+        'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Android-Real-Device-Build',
-            'name': 'Test-on-Real-S21',
+            'build': 'Mocha-Android-Real-Device-Network',
+            'name': 'Real-Device-Network-Test-S21',
             'visual': true,
-            'network': false,
+            'network': true, // Network Logs Enabled
             'console': true,
-            'isRealMobile': true // Double check ke liye lt:options mein bhi
+            'isRealMobile': true
         }
     },
     {
         'browserName': '',
         'platformName': 'Android',
-        'appium:deviceName': 'Pixel 6', // Real Device Name
+        'appium:deviceName': 'Pixel 6',
         'appium:platformVersion': '12',
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Android-Real-Device-Build',
-            'name': 'Test-on-Real-Pixel6',
+            'build': 'Mocha-Android-Real-Device-Network',
+            'name': 'Real-Device-Network-Test-Pixel6',
             'visual': true,
-            'network': false,
+            'network': true, // Network Logs Enabled
             'console': true,
             'isRealMobile': true
         }
