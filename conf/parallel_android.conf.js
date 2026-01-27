@@ -1,36 +1,37 @@
 const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
 const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
 
-// Yahan humne 2 devices dal diye hain parallel ke liye
 exports.capabilities = [
     {
         'browserName': '',
-        'platformName': 'android',
-        'appium:deviceName': 'Galaxy S10',
-        'appium:platformVersion': '11',
+        'platformName': 'Android',
+        'appium:deviceName': 'Galaxy S21 5G', // Real Device Name
+        'appium:platformVersion': '12',
         'appium:app': 'lt://proverbial-android', 
-        'appium:isRealMobile': true,
+        'appium:isRealMobile': true, // Yeh sabse important hai
         'lt:options': {
-            'build': 'Mocha-Android-Parallel-Build',
-            'name': 'Test-on-GalaxyS10',
+            'build': 'Mocha-Android-Real-Device-Build',
+            'name': 'Test-on-Real-S21',
             'visual': true,
             'network': false,
-            'console': true
+            'console': true,
+            'isRealMobile': true // Double check ke liye lt:options mein bhi
         }
     },
     {
         'browserName': '',
-        'platformName': 'android',
-        'appium:deviceName': 'Pixel 6',
+        'platformName': 'Android',
+        'appium:deviceName': 'Pixel 6', // Real Device Name
         'appium:platformVersion': '12',
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Android-Parallel-Build',
-            'name': 'Test-on-Pixel6',
+            'build': 'Mocha-Android-Real-Device-Build',
+            'name': 'Test-on-Real-Pixel6',
             'visual': true,
             'network': false,
-            'console': true
+            'console': true,
+            'isRealMobile': true
         }
     }
 ];
