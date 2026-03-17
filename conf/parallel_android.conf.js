@@ -1,5 +1,5 @@
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const LT_USERNAME = process.env.LT_USERNAME || "your_username";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_key";
 
 exports.capabilities = [
     {
