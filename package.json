@@ -2,11 +2,15 @@
   "name": "mocha-selenium-sample",
   "version": "1.0.0",
   "scripts": {
+    "android": "mocha specs/android_test.js conf/android.conf.js",
+    "ios": "mocha specs/ios_test.js --timeout 300000",
     "parallel_ios": "mocha specs/parallel_ios_test.js --timeout 300000",
     "parallel_android": "mocha specs/parallel_android_test.js --timeout 300000"
   },
   "dependencies": {
+    "appium-android-driver": "^12.7.0",
+    "appium-base-driver": "^7.11.3",
     "mocha": "^10.2.0",
-    "selenium-webdriver": "^4.10.0"
+    "selenium-webdriver": "^4.41.0"
   }
 }

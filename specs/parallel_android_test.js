@@ -1,35 +1,68 @@
-const { Builder, By, until } = require("selenium-webdriver");
-const conf = require("../conf/parallel_android.conf.js");
+const webdriver = require("selenium-webdriver");
+const { By } = require("selenium-webdriver");
 
-const LT_USERNAME = process.env.LT_USERNAME || conf.LT_USERNAME;
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || conf.LT_ACCESS_KEY;
+// ===============================
+// CONFIG (FIXED - NO argv USAGE)
+// ===============================
+const config = require("../conf/parallel_android.conf.js");
 
-describe("Android Real Device Test", function () {
-    this.timeout(300000);
+// ===============================
+// CREDENTIALS
+// ===============================
+const LT_USERNAME = process.env.LT_USERNAME || "your_username";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_key";
+
+// ===============================
+// CAPABILITIES
+// ===============================
+const capabilities = config.capabilities;
+
+// ===============================
+// DRIVER BUILDER
+// ===============================
+function buildDriver(caps) {
+  return new webdriver.Builder()
+    .usingServer(
+      "http://" +
+        LT_USERNAME +
+        ":" +
+        LT_ACCESS_KEY +
+        "@mobile-hub.lambdatest.com/wd/hub"
+    )
+    .withCapabilities(caps)
+    .build();
+}
+
+// ===============================
+// PARALLEL EXECUTION
+// ===============================
+capabilities.forEach((caps) => {
+
+  const deviceName = caps["appium:deviceName"] || "Android Device";
+
+  describe(`Mocha Android Parallel Test - ${deviceName}`, function () {
     let driver;
 
-    before(async function () {
-        const caps = conf.capabilities[0];
-        driver = await new Builder()
-            .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`)
-            .withCapabilities(caps)
-            .forBrowser('')
-            .build();
-    });
+    // Unlimited timeout (Appium-friendly)
+    this.timeout(0);
 
-    it('Should interact with Proverbial App', async function () {
-        try {
-            console.log("App Launched!");
-            let colorBtn = await driver.wait(until.elementLocated(By.id('com.lambdatest.proverbial:id/color')), 30000);
-            await colorBtn.click();
-            console.log("Success: Clicked Color");
-        } catch (e) {
-            console.error("Interaction error: ", e.message);
-            throw e;
-        }
-    });
+    it("Application is launched and actions performed", async function () {
+      driver = buildDriver(caps);
 
-    after(async function () {
-        if (driver) await driver.quit();
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/color")).click();
+      console.log("Successfully clicked Color");
+
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/Text")).click();
+      console.log("Successfully clicked Text");
+
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/notification")).click();
+      console.log("Successfully clicked Notification");
+
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/toast")).click();
+      console.log("Successfully clicked Toast");
+
+      await driver.quit();
     });
+  });
+
 });

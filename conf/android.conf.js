@@ -1,16 +1,17 @@
 exports.capabilities = {
-    'browserName': 'Chrome', // Yeh line error hatane ke liye critical hai
+    'browserName': '', // 👈 Yeh line important hai error fix karne ke liye
     'platformName': 'android',
     'appium:deviceName': 'Galaxy S10',
     'appium:platformVersion': '11',
     'appium:app': 'lt://proverbial-android', 
     'appium:isRealMobile': true,
     'lt:options': {
-        'build': 'Mocha-Appium-Sample',
-        'name': 'Mocha-Android',
+        'build': 'Mocha-Appium-Sample', 
+        'name': 'Mocha-Android-Single-Run',
         'visual': true,
-        'network': true,
-        'console': true
+        'network': false,
+        'console': true,
+        'w3c': true
     }
 };
 

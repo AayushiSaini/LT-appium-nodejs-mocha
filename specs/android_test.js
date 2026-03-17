@@ -1,82 +1,55 @@
-<<<<<<< HEAD
 const webdriver = require("selenium-webdriver");
-const { Builder, By } = require("selenium-webdriver");
+const { By } = require("selenium-webdriver");
 
-// LambdaTest Credentials
-=======
-const { Builder, By } = require("selenium-webdriver");
+// 1. Direct path to your config file
+const config = require("../conf/android.conf.js");
 
->>>>>>> bd549dd (Saving all changes before pull)
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const LT_USERNAME = config.LT_USERNAME;
+const LT_ACCESS_KEY = config.LT_ACCESS_KEY;
+const caps = config.capabilities;
 
-const capabilities = {
-    'browserName': 'Chrome',
-    'platformName': 'android',
-    'appium:deviceName': 'Galaxy S10',
-    'appium:platformVersion': '11',
-    'appium:app': 'lt://proverbial-android', 
-    'appium:isRealMobile': true,
-    'lt:options': {
-<<<<<<< HEAD
-        'build': 'Mocha-Appium-Update',
-        'name': 'Android-Test',
-        'visual': true,
-        'network': true,
-=======
-        'build': 'Mocha-Appium-Final',
-        'name': 'Android-Test',
-        'visual': true,
-        'network': false,
->>>>>>> bd549dd (Saving all changes before pull)
-        'console': true
+// 2. Async Driver Builder
+async function buildDriver(capabilities) {
+  return new webdriver.Builder()
+    .usingServer(
+      `http://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`
+    )
+    .withCapabilities(capabilities)
+    .build();
+}
+
+describe("Mocha Android Test", function () {
+  let driver;
+  this.timeout(0);
+
+  it("Should launch app and perform actions", async function () {
+    // 3. Wait for the session to start
+    driver = await buildDriver(caps);
+
+    try {
+      console.log("Test Started...");
+
+      // Color Button
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/color")).click();
+      console.log("Successfully clicked Color");
+
+      // Text Button
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/Text")).click();
+      console.log("Successfully clicked Text");
+
+      // Toast Button
+      await driver.findElement(By.id("com.lambdatest.proverbial:id/toast")).click();
+      console.log("Successfully clicked Toast");
+
+    } catch (err) {
+      console.error("Error during test:", err.message);
+      throw err;
+    } finally {
+      // 4. Always quit to save minutes
+      if (driver) {
+        await driver.quit();
+        console.log("Test Finished.");
+      }
     }
-};
-
-<<<<<<< HEAD
-describe("LambdaTest Android Test", function () {
-    let driver;
-    this.timeout(120000); // 2 minutes timeout for session creation
-=======
-describe("LambdaTest Test", function () {
-    let driver;
-    this.timeout(120000);
->>>>>>> bd549dd (Saving all changes before pull)
-
-    before(async function () {
-        driver = await new Builder()
-            .usingServer(`https://${LT_USERNAME}:${LT_ACCESS_KEY}@mobile-hub.lambdatest.com/wd/hub`)
-            .withCapabilities(capabilities)
-            .forBrowser('chrome') 
-            .build();
-    });
-
-<<<<<<< HEAD
-    it('Should interact with the app', async function () {
-        try {
-            await driver.findElement(By.id('com.lambdatest.proverbial:id/color')).click();
-            console.log("Clicked Color successfully");
-            
-            await driver.findElement(By.id('com.lambdatest.proverbial:id/Text')).click();
-            console.log("Clicked Text successfully");
-        } catch (e) {
-            console.error("Test failed during interaction:", e.message);
-            throw e;
-        }
-    });
-
-    after(async function () {
-        if (driver) {
-            await driver.quit();
-        }
-=======
-    it('Launch App and Click Color', async function () {
-        await driver.findElement(By.id('com.lambdatest.proverbial:id/color')).click();
-        console.log("Success: Clicked Color");
-    });
-
-    after(async function () {
-        if (driver) await driver.quit();
->>>>>>> bd549dd (Saving all changes before pull)
-    });
+  });
 });
