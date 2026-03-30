@@ -1,7 +1,7 @@
 const webdriver = require("selenium-webdriver");
 const { By } = require("selenium-webdriver");
 
-// 1. Path Fixed: Direct reference to ios.conf.js (No more --timeout errors)
+
 const config = require("../conf/ios.conf.js");
 
 // Credentials
@@ -10,7 +10,7 @@ const LT_ACCESS_KEY = config.LT_ACCESS_KEY || "your_key";
 
 const caps = config.capabilities;
 
-// 2. Async Driver Builder
+
 async function buildDriver(capabilities) {
   return new webdriver.Builder()
     .usingServer(
@@ -25,7 +25,7 @@ describe("Mocha Appium iOS Single Device Test", function () {
   this.timeout(0);
 
   it("Application is launched and actions performed", async function () {
-    // 3. FIXED: Added await to start the session properly
+   
     driver = await buildDriver(caps);
 
     try {
@@ -47,7 +47,7 @@ describe("Mocha Appium iOS Single Device Test", function () {
       console.error("iOS Test Error: ", err.message);
       throw err;
     } finally {
-      // 4. Always quit to free up LambdaTest concurrency
+      
       if (driver) {
         await driver.quit();
         console.log("iOS Session Closed.");

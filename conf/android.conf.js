@@ -1,5 +1,5 @@
 exports.capabilities = {
-    'browserName': '', // 👈 Yeh line important hai error fix karne ke liye
+    'browserName': '', 
     'platformName': 'android',
     'appium:deviceName': 'Galaxy S10',
     'appium:platformVersion': '11',

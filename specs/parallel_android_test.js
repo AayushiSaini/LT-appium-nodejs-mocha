@@ -1,25 +1,16 @@
 const webdriver = require("selenium-webdriver");
 const { By } = require("selenium-webdriver");
 
-// ===============================
-// CONFIG (FIXED - NO argv USAGE)
-// ===============================
 const config = require("../conf/parallel_android.conf.js");
 
-// ===============================
-// CREDENTIALS
-// ===============================
+
 const LT_USERNAME = process.env.LT_USERNAME || "your_username";
 const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_key";
 
-// ===============================
-// CAPABILITIES
-// ===============================
+
 const capabilities = config.capabilities;
 
-// ===============================
-// DRIVER BUILDER
-// ===============================
+
 function buildDriver(caps) {
   return new webdriver.Builder()
     .usingServer(
@@ -33,9 +24,7 @@ function buildDriver(caps) {
     .build();
 }
 
-// ===============================
-// PARALLEL EXECUTION
-// ===============================
+
 capabilities.forEach((caps) => {
 
   const deviceName = caps["appium:deviceName"] || "Android Device";
@@ -43,7 +32,7 @@ capabilities.forEach((caps) => {
   describe(`Mocha Android Parallel Test - ${deviceName}`, function () {
     let driver;
 
-    // Unlimited timeout (Appium-friendly)
+   
     this.timeout(0);
 
     it("Application is launched and actions performed", async function () {
