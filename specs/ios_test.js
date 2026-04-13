@@ -1,14 +1,14 @@
 const { Builder, By } = require("selenium-webdriver");
 
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const LT_USERNAME = process.env.LT_USERNAME || "your_lambdatest_username";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_lambdatest_access_key";
 
 const capabilities = {
-    'browserName': 'Safari', // iOS ke liye Safari ya empty string
+    'browserName': 'Safari',
     'platformName': 'ios',
     'appium:deviceName': 'iPhone 13',
     'appium:platformVersion': '15',
-    'appium:app': 'lt://proverbial-ios', // Ensure aapne iOS app upload kiya ho
+    'appium:app': 'lt://proverbial-ios',
     'appium:isRealMobile': true,
     'lt:options': {
         'build': 'Mocha-Appium-iOS-Final',
@@ -32,7 +32,6 @@ describe("LambdaTest iOS Test", function () {
     });
 
     it('Launch iOS App and Click Text', async function () {
-        // iOS element locators thode alag ho sakte hain, ye sample hai
         await driver.findElement(By.id('Text')).click();
         console.log("Success: Clicked Text on iOS");
     });
@@ -41,4 +40,3 @@ describe("LambdaTest iOS Test", function () {
         if (driver) await driver.quit();
     });
 });
-

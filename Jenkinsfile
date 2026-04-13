@@ -16,13 +16,11 @@ pipeline {
             parallel {
                 stage('iOS Tests') {
                     steps {
-                        echo "Starting iOS Parallel Tests..."
                         sh 'npm run parallel_ios'
                     }
                 }
                 stage('Android Tests') {
                     steps {
-                        echo "Starting Android Parallel Tests..."
                         sh 'npm run parallel_android'
                     }
                 }

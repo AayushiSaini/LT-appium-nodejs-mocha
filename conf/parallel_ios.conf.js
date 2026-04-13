@@ -1,3 +1,6 @@
+const LT_USERNAME = process.env.LT_USERNAME || "your_lambdatest_username";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_lambdatest_access_key";
+
 exports.capabilities = [
   {
     'browserName': 'safari',
@@ -7,7 +10,8 @@ exports.capabilities = [
     'lt:options': {
       'isRealMobile': true,
       'build': 'Mocha-iOS-Parallel-Final',
-      'name': 'Test-iPhone-15'
+      'name': 'Test-iPhone-15',
+      'app': 'lt://proverbial-ios',
     }
   },
   {
@@ -22,3 +26,6 @@ exports.capabilities = [
     }
   }
 ];
+
+exports.LT_USERNAME = LT_USERNAME;
+exports.LT_ACCESS_KEY = LT_ACCESS_KEY;

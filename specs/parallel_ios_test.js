@@ -1,8 +1,8 @@
 const { Builder } = require("selenium-webdriver");
 const conf = require("../conf/parallel_ios.conf.js");
 
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const LT_USERNAME = process.env.LT_USERNAME || "your_lambdatest_username";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_lambdatest_access_key";
 
 describe("LambdaTest iOS Parallel Test", function () {
   this.timeout(300000);
@@ -10,8 +10,7 @@ describe("LambdaTest iOS Parallel Test", function () {
   conf.capabilities.forEach(function (caps) {
     it("Running test on " + caps['appium:deviceName'], async function () {
       let driver = await new Builder()
-        .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@hub.lambdatest.com/wd/hub")
-        .forBrowser('safari')
+        .usingServer("https://" + LT_USERNAME + ":" + LT_ACCESS_KEY + "@mobile-hub.lambdatest.com/wd/hub")
         .withCapabilities({
           ...caps,
           'lt:options': {

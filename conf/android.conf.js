@@ -1,5 +1,5 @@
 exports.capabilities = {
-    'browserName': 'Chrome', // Yeh line error hatane ke liye critical hai
+    'browserName': 'Chrome',
     'platformName': 'android',
     'appium:deviceName': 'Galaxy S10',
     'appium:platformVersion': '11',
@@ -7,7 +7,7 @@ exports.capabilities = {
     'appium:isRealMobile': true,
     'lt:options': {
         'build': 'Mocha-Appium-Sample',
-        'name': 'Mocha-Android',
+        'name': 'Mocha-Android-Single',
         'visual': true,
         'network': true,
         'console': true

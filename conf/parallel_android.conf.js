@@ -1,37 +1,35 @@
-const LT_USERNAME = process.env.LT_USERNAME || "aayushis";
-const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "LT_YfpWipMk0LwK9H8x5WCLawCWCmtAehrXGrGZzFXZQFXkM2u";
+const LT_USERNAME = process.env.LT_USERNAME || "your_lambdatest_username";
+const LT_ACCESS_KEY = process.env.LT_ACCESS_KEY || "your_lambdatest_access_key";
 
 exports.capabilities = [
     {
-        'browserName': '',
+        'browserName': 'Chrome',
         'platformName': 'Android',
         'appium:deviceName': 'Galaxy S21 5G',
         'appium:platformVersion': '12',
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Android-Real-Device-Network',
-            'name': 'Real-Device-Network-Test-S21',
+            'build': 'Android-Parallel-Build',
+            'name': 'Parallel-Test-S21',
             'visual': true,
-            'network': true, // Network Logs Enabled
-            'console': true,
-            'isRealMobile': true
+            'network': false,
+            'console': true
         }
     },
     {
-        'browserName': '',
+        'browserName': 'Chrome',
         'platformName': 'Android',
-        'appium:deviceName': 'Pixel 6',
+        'appium:deviceName': 'Galaxy S22 5G',
         'appium:platformVersion': '12',
         'appium:app': 'lt://proverbial-android', 
         'appium:isRealMobile': true,
         'lt:options': {
-            'build': 'Mocha-Android-Real-Device-Network',
-            'name': 'Real-Device-Network-Test-Pixel6',
+            'build': 'Android-Parallel-Build',
+            'name': 'Parallel-Test-S22',
             'visual': true,
-            'network': true, // Network Logs Enabled
-            'console': true,
-            'isRealMobile': true
+            'network': false,
+            'console': true
         }
     }
 ];
